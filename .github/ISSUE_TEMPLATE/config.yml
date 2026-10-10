@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/security/advisories/new
+    about: Please report vulnerabilities privately, not as public issues.
+  - name: Plugin website
+    url: https://blockstreamtechnologies.llc/pgp-encryption-for-wordpress-contact-pages/
+    about: Documentation and information about the plugin.

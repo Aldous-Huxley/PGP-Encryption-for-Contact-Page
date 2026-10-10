@@ -210,7 +210,7 @@ No files were removed.
 ### Added
 - Initial release with PGP encryption support for contact forms.
 
-[2.1.0]: https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/compare/v2.0.1...release/2.1.0
-[2.0.1]: https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/releases/tag/v2.0.1
-[2.0.0]: https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/releases/tag/V2.0.0
-[1.0.0]: https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/releases/tag/v1.0.0
+[2.1.0]: https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/compare/v2.0.1...v2.1.0
+[2.0.1]: https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases/tag/v2.0.1
+[2.0.0]: https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases/tag/V2.0.0
+[1.0.0]: https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases/tag/v1.0.0
