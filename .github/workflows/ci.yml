@@ -1,0 +1,73 @@
+# File: ci.yml
+# Path: pgp-encryption-for-contact-page/.github/workflows/ci.yml
+# CI: PHP lint (7.4-8.4), PHPCS (WPCS 3 + PHPCompatibilityWP), official WordPress Plugin Check.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-lint:
+    name: PHP lint (${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.0', '8.2', '8.4']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Lint PHP files
+        run: |
+          php -v
+          find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
+
+  phpcs:
+    name: PHPCS (WPCS + PHPCompatibilityWP)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+      - name: Install dev dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Run PHPCS
+        run: vendor/bin/phpcs --report-full --report-summary
+
+  plugin-check:
+    name: WordPress Plugin Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build distributable plugin (respects .gitattributes export-ignore)
+        run: |
+          mkdir -p build/pgp-encryption-for-contact-page
+          git archive HEAD | tar -x -C build/pgp-encryption-for-contact-page
+          find build -type f | sort
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: './build/pgp-encryption-for-contact-page'
+          slug: 'pgp-encryption-for-contact-page'

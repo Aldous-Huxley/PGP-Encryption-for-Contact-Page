@@ -1,0 +1,5 @@
+# File: .gitignore
+# Path: pgp-encryption-for-contact-page/.gitignore
+/vendor/
+/build/
+/node_modules/
