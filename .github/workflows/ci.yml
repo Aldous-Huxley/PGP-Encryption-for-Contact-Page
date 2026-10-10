@@ -56,18 +56,52 @@ jobs:
         run: vendor/bin/phpcs --report-full --report-summary
 
   plugin-check:
+    # The official Plugin Check plugin, run via WP-CLI on a throwaway WordPress (SQLite).
+    # wordpress/plugin-check-action@v1 cannot be used: it always activates the plugin inside
+    # wp-env, whose PHP image has no gnupg extension, so activation stops by design
+    # ("requires the PHP gnupg extension"). This job provides gnupg and runs the same checks.
     name: WordPress Plugin Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install gpgme (for the gnupg extension)
+        run: sudo apt-get update -q && sudo apt-get install -y -q libgpgme-dev
+      - name: Set up PHP with gnupg
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: gnupg, sqlite3, pdo_sqlite, mbstring, zip
+          coverage: none
+          tools: wp-cli
       - name: Build distributable plugin (respects .gitattributes export-ignore)
         run: |
           mkdir -p build/pgp-encryption-for-contact-page
           git archive HEAD | tar -x -C build/pgp-encryption-for-contact-page
           find build -type f | sort
+      - name: Set up WordPress (latest) with SQLite and Plugin Check
+        run: |
+          php -m | grep -i gnupg
+          mkdir -p "$RUNNER_TEMP/wp" && cd "$RUNNER_TEMP/wp"
+          wp core download --quiet
+          curl -sSfL -o /tmp/sqlite.zip https://downloads.wordpress.org/plugin/sqlite-database-integration.latest-stable.zip
+          unzip -q /tmp/sqlite.zip -d wp-content/plugins
+          cp wp-content/plugins/sqlite-database-integration/db.copy wp-content/db.php
+          sed -i "s#{SQLITE_IMPLEMENTATION_FOLDER_PATH}#$PWD/wp-content/plugins/sqlite-database-integration#;s#{SQLITE_PLUGIN}#sqlite-database-integration/load.php#" wp-content/db.php
+          wp config create --dbname=wp --dbuser=wp --dbpass=wp --skip-check --quiet
+          wp core install --url=http://localhost --title=CI --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
+          curl -sSfL -o /tmp/plugin-check.zip https://downloads.wordpress.org/plugin/plugin-check.latest-stable.zip
+          unzip -q /tmp/plugin-check.zip -d wp-content/plugins
+          wp plugin activate plugin-check
+          cp -r "$GITHUB_WORKSPACE/build/pgp-encryption-for-contact-page" wp-content/plugins/
+          wp plugin activate pgp-encryption-for-contact-page
+          wp core version --extra
+          wp plugin list
       - name: Run Plugin Check
-        uses: wordpress/plugin-check-action@v1
-        with:
-          build-dir: './build/pgp-encryption-for-contact-page'
-          slug: 'pgp-encryption-for-contact-page'
+        run: |
+          cd "$RUNNER_TEMP/wp"
+          wp plugin check pgp-encryption-for-contact-page --include-experimental --include-low-severity-errors | tee /tmp/plugin-check.txt
+          if ! grep -q "No errors found" /tmp/plugin-check.txt; then
+            echo "::error::Plugin Check reported issues (see output above)."
+            exit 1
+          fi
