@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  <img alt="Version 2.1.0" src="https://img.shields.io/badge/version-2.1.0-blue">
+  <a href="https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases/latest"><img alt="Version 2.1.0" src="https://img.shields.io/badge/version-2.1.0-blue"></a>
   <img alt="WordPress tested up to 7.1" src="https://img.shields.io/badge/WordPress-tested%207.1-21759B?logo=wordpress&logoColor=white">
   <img alt="PHP 7.4+ (tested 8.4)" src="https://img.shields.io/badge/PHP-7.4%2B%20(tested%208.4)-777BB4?logo=php&logoColor=white">
-  <img alt="License GPL-2.0-or-later" src="https://img.shields.io/badge/license-GPL--2.0--or--later-green">
+  <a href="LICENSE"><img alt="License GPL-2.0-or-later" src="https://img.shields.io/badge/license-GPL--2.0--or--later-green"></a>
   <a href="https://buymeacoffee.com/stanghellini"><img alt="Buy me a coffee" src="https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?logo=buymeacoffee&logoColor=black"></a>
 </p>
 
@@ -69,7 +69,7 @@ If `gnupg` is not available, the plugin shows an admin notice and won't activate
 
 ## Installation
 
-1. Download the plugin zip from the [Releases](https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/releases) page, or clone this repository into a folder named `pgp-encryption-for-contact-page`.
+1. Download the plugin zip from the [Releases](https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases) page, or clone this repository into a folder named `pgp-encryption-for-contact-page`.
 2. In WordPress, go to **Plugins → Add New → Upload Plugin**, choose the zip, then **Activate**. Alternatively, upload the folder to `/wp-content/plugins/`.
 3. Configure it under **Settings → PGP Encryption** (see below).
 4. Add `[pgp_contact_form]` to any page or post. Optionally, add `[pgp_public_key]` to publish your public key.
@@ -172,7 +172,7 @@ See **[CHANGELOG.md](CHANGELOG.md)**. Highlights of **2.1.0**:
 
 ## Contributing
 
-Issues and pull requests are welcome. Please:
+Issues and pull requests are welcome. See **[CONTRIBUTING.md](CONTRIBUTING.md)**, and report vulnerabilities privately as described in **[SECURITY.md](SECURITY.md)**. In short:
 
 1. Follow the [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/). PHPCS with `WordPress` should report 0 issues.
 2. Run the official [Plugin Check](https://wordpress.org/plugins/plugin-check/) before submitting.

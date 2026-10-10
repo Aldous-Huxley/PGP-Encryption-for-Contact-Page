@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a problem with PGP Encryption for Contact Page
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Do not report security vulnerabilities here.** See [SECURITY.md](https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/blob/main/SECURITY.md).
+        Never paste private keys, Turnstile secret keys, or unredacted email addresses.
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: "2.1.0"
+    validations:
+      required: true
+  - type: input
+    id: wp-version
+    attributes:
+      label: WordPress version
+      placeholder: "7.1"
+    validations:
+      required: true
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version and gnupg extension version
+      placeholder: "PHP 8.4, gnupg 1.5.2"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to Settings > PGP Encryption
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Debug log excerpt (optional)
+      description: Enable "Enable Debugging Logs", reproduce, then use "View debug log". Email addresses are already redacted; remove anything else sensitive.
+      render: text
+  - type: dropdown
+    id: turnstile
+    attributes:
+      label: Is Cloudflare Turnstile enabled?
+      options: ["No", "Yes"]

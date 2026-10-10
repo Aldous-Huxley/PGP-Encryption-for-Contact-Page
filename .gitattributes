@@ -1,0 +1,14 @@
+# Normalize line endings
+* text=auto eol=lf
+*.png binary
+*.ttf binary
+
+# Exclude development files from `git archive` / GitHub source downloads
+/.github            export-ignore
+/docs               export-ignore
+/.gitattributes     export-ignore
+/.editorconfig      export-ignore
+/README.md          export-ignore
+/CHANGELOG.md       export-ignore
+/CONTRIBUTING.md    export-ignore
+/SECURITY.md        export-ignore
