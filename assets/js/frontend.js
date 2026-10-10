@@ -1,80 +1,51 @@
 /* File: frontend.js */
-/* Path: PGP-Encryption-for-Contact-Page/assets/js/frontend.js */
+/* Path: pgp-encryption-for-contact-page/assets/js/frontend.js */
 
 jQuery(document).ready(function($) {
-    // Log script initialization
-    console.log('PGP_ECP: frontend.js initialized, targeting #pgp-ecp-contact-form');
+    // Check if debugging is enabled (passed from wp_localize_script)
+    var isDebugEnabled = pgp_ecp_vars.debug_enabled;
 
-    // Ensure form exists before binding
-    if ($('#pgp-ecp-contact-form').length === 0) {
-        console.error('PGP_ECP: Form #pgp-ecp-contact-form not found on page');
-        return;
+    if (isDebugEnabled) {
+        console.log('PGP_ECP: Initializing frontend JavaScript');
     }
 
-    // Use delegated event binding to handle dynamic content
-    $(document).on('submit', '#pgp-ecp-contact-form', function(e) {
+    $('#pgp-ecp-contact-form').on('submit', function(e) {
         e.preventDefault();
 
-        var $form = $(this);
-        var $responseDiv = $('#pgp-ecp-response');
-        $responseDiv.html(''); // Clear previous messages
-
-        // Log form submission attempt
-        console.log('PGP_ECP: Form submission triggered', {
-            ajax_url: pgp_ecp_ajax.ajax_url,
-            nonce: pgp_ecp_ajax.nonce,
-            form_data: $form.serialize()
-        });
-
-        // Verify AJAX URL and nonce
-        if (!pgp_ecp_ajax.ajax_url || !pgp_ecp_ajax.nonce) {
-            console.error('PGP_ECP: AJAX configuration missing', pgp_ecp_ajax);
-            $responseDiv.html('<p class="error">Form configuration error. Please contact the site administrator.</p>');
-            return;
+        if (isDebugEnabled) {
+            console.log('PGP_ECP: Form submission started');
         }
 
+        var formData = $(this).serialize();
+
         $.ajax({
-            url: pgp_ecp_ajax.ajax_url,
+            url: pgp_ecp_vars.ajax_url,
             type: 'POST',
-            data: $form.serialize() + '&action=pgp_ecp_submit_form&nonce=' + pgp_ecp_ajax.nonce,
-            dataType: 'json',
+            data: formData,
             beforeSend: function() {
-                console.log('PGP_ECP: Sending AJAX request to ' + pgp_ecp_ajax.ajax_url);
-                $responseDiv.html('<p>Sending message...</p>');
+                if (isDebugEnabled) {
+                    console.log('PGP_ECP: Sending AJAX request');
+                }
             },
             success: function(response) {
-                console.log('PGP_ECP: AJAX response received', response);
                 if (response.success) {
-                    $responseDiv.html('<p class="success">' + response.data.message + '</p>');
-                    $form[0].reset();
+                    if (isDebugEnabled) {
+                        console.log('PGP_ECP: Form submitted successfully', response.data.message);
+                    }
+                    alert(response.data.message);
+                    $('#pgp-ecp-contact-form')[0].reset();
                 } else {
-                    console.error('PGP_ECP: Server error - ' + (response.data && response.data.message ? response.data.message : 'Unknown error'));
-                    $responseDiv.html('<p class="error">' + (response.data && response.data.message ? response.data.message : 'An error occurred. Please try again.') + '</p>');
+                    if (isDebugEnabled) {
+                        console.log('PGP_ECP: Form submission failed', response.data.message);
+                    }
+                    alert(pgp_ecp_vars.error_prefix + response.data.message);
                 }
             },
             error: function(xhr, status, error) {
-                console.error('PGP_ECP: AJAX request failed', {
-                    status: status,
-                    error: error,
-                    statusCode: xhr.status,
-                    responseText: xhr.responseText
-                });
-                var errorMessage = 'An error occurred. Please try again.';
-                if (xhr.status === 403) {
-                    errorMessage = 'Security check failed. Please refresh and try again.';
-                } else if (xhr.status === 500) {
-                    errorMessage = 'Server error. Please check server logs or contact support.';
-                } else if (xhr.responseText) {
-                    try {
-                        var parsed = JSON.parse(xhr.responseText);
-                        if (parsed.data && parsed.data.message) {
-                            errorMessage = parsed.data.message;
-                        }
-                    } catch (e) {
-                        errorMessage = 'Unexpected response: ' + xhr.responseText;
-                    }
+                if (isDebugEnabled) {
+                    console.log('PGP_ECP: AJAX error', error);
                 }
-                $responseDiv.html('<p class="error">' + errorMessage + '</p>');
+                alert(pgp_ecp_vars.ajax_error);
             }
         });
     });
