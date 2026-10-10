@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/actions/workflows/ci.yml/badge.svg?branch=main"></a>
   <a href="https://github.com/Aldous-Huxley/PGP-Encryption-for-Contact-Page/releases/latest"><img alt="Version 2.1.0" src="https://img.shields.io/badge/version-2.1.0-blue"></a>
   <img alt="WordPress tested up to 7.1" src="https://img.shields.io/badge/WordPress-tested%207.1-21759B?logo=wordpress&logoColor=white">
   <img alt="PHP 7.4+ (tested 8.4)" src="https://img.shields.io/badge/PHP-7.4%2B%20(tested%208.4)-777BB4?logo=php&logoColor=white">

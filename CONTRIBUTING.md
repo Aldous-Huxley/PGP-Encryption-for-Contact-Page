@@ -24,11 +24,10 @@ Thanks for helping improve **PGP Encryption for Contact Page**!
 # PHP syntax
 find . -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -n1 php -l
 
-# WordPress Coding Standards (WPCS 3)
-composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
-composer global require wp-coding-standards/wpcs:^3 phpcompatibility/phpcompatibility-wp:"*"
-phpcs --standard=WordPress --extensions=php --ignore=vendor .
-phpcs --standard=PHPCompatibilityWP --runtime-set testVersion 7.4- --extensions=php --ignore=vendor .
+# WordPress Coding Standards 3 + PHPCompatibilityWP (ruleset: phpcs.xml.dist)
+composer install
+vendor/bin/phpcs      # or: composer lint
+vendor/bin/phpcbf     # auto-fix, or: composer lint:fix
 ```
 
 ### Plugin Check
@@ -40,6 +39,8 @@ wp plugin check pgp-encryption-for-contact-page
 ```
 
 The PHP checks should report 0 issues and Plugin Check should report no errors.
+
+CI (`.github/workflows/ci.yml`) runs the same checks on every pull request: PHP lint on 7.4 / 8.0 / 8.2 / 8.4, PHPCS, and the official Plugin Check.
 
 ## Pull requests
 
