@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The PGP encryption, contact form, Turnstile CAPTCHA and settings work as before. Option names are unchanged.
 
 ### Added
+- **`[pgp_public_key]` shortcode restored** (it was in 1.0.0 and missing in 2.0.x). It shows the armored public key saved in the settings inside `<pre class="pgp-ecp-public-key">`, escaped with `esc_html`. With no key saved it shows the translatable "No public key available." The output matches 1.0.0, with a CSS class and styling added.
 - **Private debug log:** written to `wp-content/uploads/pgp-ecp-logs/debug-<random>.log`.
   - The file name comes from the site's secret salts via `wp_hash()`, so it can't be guessed.
   - The folder is protected by `index.php` and a deny-all `.htaccess`.
@@ -149,6 +150,7 @@ The "debug code" (`error_log`) warning was authorized by the plugin owner, becau
 
   A forged-nonce notice prints nothing.
 - Uninstall: the option and the log folder were removed.
+- `[pgp_public_key]`: renders the saved key; injected `<script>`/`<b>` markup is escaped (raw `<script>` count 0); empty or missing key shows "No public key available."; `[pgp_contact_form]` still renders.
 - Buy me a coffee button (headless Chrome, as admin): correct colours, border, corners, link, new tab and rel; the Cookie font loaded; no remote requests from the plugin. Screenshot: `bmc-button.png`.
 - **Live site (by the plugin owner):** debug logging, View debug log and Delete debug log confirmed working.
 
@@ -172,12 +174,12 @@ The "debug code" (`error_log`) warning was authorized by the plugin owner, becau
 | `uninstall.php` | Modified | Deletes the `pgp_ecp_options` option, the `pgp_ecp_temp_data` transient and the `uploads/pgp-ecp-logs/` folder. Prefixed globals. No logging. |
 | `readme.txt` | Modified | Headers (Contributors, Donate link, Tags, Tested up to 7.1, Requires PHP 7.4, Stable tag 2.1.0, GPL-2.0-or-later). New short description. Requirements, External services and Credits sections. Debug FAQ rewritten. 2.1.0 changelog and upgrade notice. Duplicate FAQ line removed. |
 | `includes/class-pgp-ecp-admin.php` | Modified | Escaping and i18n throughout. Sanitize callback unslashes and sanitizes. Capability check. Admin CSS enqueued. Admin JS gets a debug flag. Inline script removed. Debug Log box (status, size, View/Delete). `handle_view_log()` and `handle_delete_log()` handlers. Result notices. Log-write failure notice. Local Buy me a coffee button in the page header. Updated debug-field description. |
-| `includes/class-pgp-ecp-frontend.php` | Modified | Unslash and sanitize, sanitized nonce, i18n'd messages and form labels. Turnstile URLs as constants (opt-in, justified phpcs:ignore). Handle `pgp-ecp-cf-turnstile`. Safe Turnstile response check. Redacted recipient. Extra success-path log lines. Localized JS strings. |
+| `includes/class-pgp-ecp-frontend.php` | Modified | Restored the `[pgp_public_key]` shortcode (`render_public_key()`). Unslash and sanitize, sanitized nonce, i18n'd messages and form labels. Turnstile URLs as constants (opt-in, justified phpcs:ignore). Handle `pgp-ecp-cf-turnstile`. Safe Turnstile response check. Redacted recipient. Extra success-path log lines. Localized JS strings. |
 | `includes/class-pgp-ecp-encryption.php` | Modified | WPCS formatting and docblocks. Shared logger. Behaviour unchanged. |
 | `includes/class-pgp-ecp-activator.php` | Modified | Escaped, translatable `wp_die()` message. Shared logger. Default options unchanged. |
 | `includes/class-pgp-ecp-deactivator.php` | Modified | WPCS formatting. Shared logger. Behaviour unchanged. |
 | `assets/css/admin.css` | Modified | Header path fixed. Header flex layout, local `@font-face` and Buy me a coffee button styles added. |
-| `assets/css/frontend.css` | Modified | Header path only. |
+| `assets/css/frontend.css` | Modified | Header path fixed. Styles for the `[pgp_public_key]` output added. |
 | `assets/js/admin.js` | Modified | `/* */` header with lowercase path. Console output only when debug is on (`pgp_ecp_admin_vars.debug_enabled`). |
 | `assets/js/frontend.js` | Modified | `/* */` header with lowercase path. Error/AJAX console output only when debug is on. Localized alert strings. |
 | `assets/fonts/Cookie-Regular.ttf` | **Added** | Cookie font by Ania Kruk, unmodified, SIL OFL 1.1 (sha256 9daf3cc9…080e). |

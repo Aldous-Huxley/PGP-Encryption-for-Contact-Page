@@ -40,6 +40,7 @@ class PGP_ECP_Frontend {
 	public function __construct() {
 		pgp_ecp_log( 'PGP_ECP_Frontend constructor called' );
 		add_shortcode( 'pgp_contact_form', array( $this, 'render_contact_form' ) );
+		add_shortcode( 'pgp_public_key', array( $this, 'render_public_key' ) );
 		add_action( 'wp_ajax_pgp_ecp_submit_form', array( $this, 'handle_form_submission' ) );
 		add_action( 'wp_ajax_nopriv_pgp_ecp_submit_form', array( $this, 'handle_form_submission' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -124,6 +125,22 @@ class PGP_ECP_Frontend {
 		</form>
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Render the [pgp_public_key] shortcode: the configured armored public key (restored from 1.0.0).
+	 *
+	 * @return string
+	 */
+	public function render_public_key() {
+		$options    = get_option( 'pgp_ecp_options', array() );
+		$public_key = isset( $options['pgp_public_key'] ) ? trim( (string) $options['pgp_public_key'] ) : '';
+
+		if ( '' === $public_key ) {
+			return '<p class="pgp-ecp-public-key-empty">' . esc_html__( 'No public key available.', 'pgp-encryption-for-contact-page' ) . '</p>';
+		}
+
+		return '<pre class="pgp-ecp-public-key">' . esc_html( $public_key ) . '</pre>';
 	}
 
 	/**

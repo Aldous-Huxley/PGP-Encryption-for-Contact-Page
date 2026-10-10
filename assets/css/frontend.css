@@ -65,3 +65,16 @@
     padding: 10px;
     border-radius: 4px;
 }
+/* [pgp_public_key] shortcode output. */
+.pgp-ecp-public-key {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 12px;
+    background: #f6f7f7;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

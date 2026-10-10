@@ -18,7 +18,7 @@ Requires PHP 7.4 or later (tested up to PHP 8.4) and the PHP gnupg extension. Se
 
 **Key Features:**
 * Simple shortcode-based contact form: `[pgp_contact_form]`
-* Display your public key: `[pgp_public_key]`
+* Display your public key: `[pgp_public_key]` (shows the armored public key saved in the settings, or "No public key available.")
 * Admin settings for configuring PGP public key, recipient email, and optional Cloudflare Turnstile
 * Enable/disable Turnstile CAPTCHA via a checkbox in Settings > PGP Encryption
 * Enable/disable detailed debugging logs (no `WP_DEBUG` needed); logs go to a private, protected plugin log file with email addresses redacted, and can be viewed or deleted from the settings page
@@ -108,6 +108,7 @@ Service provided by Cloudflare, Inc.: [Terms of Service](https://www.cloudflare.
 * Documented the optional Cloudflare Turnstile external service.
 * Privacy: email addresses are redacted in all debug output (pgp_ecp_redact_email() plus automatic scrubbing of every log line).
 * Debug output now goes to a private plugin log file in wp-content/uploads/pgp-ecp-logs/ instead of the shared debug.log.
+* Restored the `[pgp_public_key]` shortcode (from 1.0.0; missing in 2.0.x), which displays your saved public key.
 * Added a local "Buy me a coffee" button to the settings page (no remote script; bundled Cookie font, SIL OFL 1.1).
 * Added "View debug log" and "Delete debug log" buttons to the settings page. Uninstall removes the log folder.
 

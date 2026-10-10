@@ -27,6 +27,7 @@ Optional **Cloudflare Turnstile** CAPTCHA protects the form from spam. A built-i
 ## Features
 
 - **Shortcode contact form:** `[pgp_contact_form]` (name, email, subject, message), submitted over AJAX.
+- **Public key display:** `[pgp_public_key]` shows your saved public key so visitors can encrypt to you directly.
 - **Server-side PGP encryption** with the PHP `gnupg` extension. Each email body is an ASCII-armored PGP message (`-----BEGIN PGP MESSAGE-----`).
 - **Key check on save:** the armored public key is validated and test-imported when you save the settings.
 - **Optional Cloudflare Turnstile CAPTCHA,** verified on the server.
@@ -71,7 +72,7 @@ If `gnupg` is not available, the plugin shows an admin notice and won't activate
 1. Download the plugin zip from the [Releases](https://github.com/Aldous-Huxley/PGP-Encryptio-for-Contact-Page/releases) page, or clone this repository into a folder named `pgp-encryption-for-contact-page`.
 2. In WordPress, go to **Plugins → Add New → Upload Plugin**, choose the zip, then **Activate**. Alternatively, upload the folder to `/wp-content/plugins/`.
 3. Configure it under **Settings → PGP Encryption** (see below).
-4. Add `[pgp_contact_form]` to any page or post.
+4. Add `[pgp_contact_form]` to any page or post. Optionally, add `[pgp_public_key]` to publish your public key.
 
 ## Configuration
 
@@ -97,11 +98,12 @@ Go to **Settings → PGP Encryption**:
 - **Write failures:** if the folder can't be written, the settings page tells you why.
 - **When you're done:** turn the option off.
 
-## Shortcode
+## Shortcodes
 
 | Shortcode | Output |
 |---|---|
 | `[pgp_contact_form]` | The encrypted contact form. If no public key is configured, it shows a configuration error instead. |
+| `[pgp_public_key]` | Your saved ASCII-armored public key in a `<pre>` block (escaped). If no key is saved, it shows "No public key available." |
 
 ## Privacy & security
 
@@ -165,6 +167,7 @@ See **[CHANGELOG.md](CHANGELOG.md)**. Highlights of **2.1.0**:
 - WordPress Coding Standards: 0 errors, 0 warnings (was 1,783 errors, 111 warnings).
 - A private, redacted debug log with View and Delete.
 - GPL-2.0-or-later.
+- The `[pgp_public_key]` shortcode is restored.
 - A new Buy Me a Coffee link.
 
 ## Contributing
