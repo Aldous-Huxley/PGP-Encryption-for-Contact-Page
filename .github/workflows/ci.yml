@@ -73,7 +73,12 @@ jobs:
           php-version: '8.4'
           extensions: gnupg, sqlite3, pdo_sqlite, mbstring, zip
           coverage: none
-          tools: wp-cli
+          tools: none
+      - name: Install WP-CLI
+        run: |
+          curl -sSfL -o /tmp/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          sudo install -m 0755 /tmp/wp-cli.phar /usr/local/bin/wp
+          wp --info
       - name: Build distributable plugin (respects .gitattributes export-ignore)
         run: |
           mkdir -p build/pgp-encryption-for-contact-page
